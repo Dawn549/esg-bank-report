@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寰宇永續銀行 - 企業永續報告書 (ESG Portal)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bank: {
+                            dark: '#0B1120',
+                            card: '#152033',
+                            accent: '#10B981',
+                            cyan: '#06B6D4',
+                            glow: '#34D399'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Microsoft JhengHei', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Font Awesome Icons for extra icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0B1120;
+            color: #F3F4F6;
+            font-family: 'Inter', 'Microsoft JhengHei', sans-serif;
+            overflow-x: hidden;
+        }
+        /* Custom Glassmorphism Effects */
+        .glass-card {
+            background: rgba(21, 32, 51, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(11, 17, 32, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-btn {
+            background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+            transition: all 0.3s ease;
+        }
+        .glow-btn:hover {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+            transform: translateY(-2px);
+        }
+        .outline-btn {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .outline-btn:hover {
+            border-color: #10B981;
+            background: rgba(16, 185, 129, 0.1);
+            color: #34D399;
+        }
+        /* Glowing Orbs in Background */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: -1;
+            opacity: 0.25;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen pb-12">
+
+    <!-- Background Decoration Glowing Circles -->
+    <div class="orb w-96 h-96 bg-emerald-500 top-0 left-1/2 -translate-x-1/2"></div>
+    <div class="orb w-80 h-80 bg-cyan-500 top-96 left-10"></div>
+    <div class="orb w-96 h-96 bg-blue-600 bottom-20 right-10"></div>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-nav px-4 lg:px-8 py-3 transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="scrollToTop()">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-cyan-400 flex items-center justify-center text-slate-950 font-bold text-xl shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid font-bold fa-building-columns"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-none tracking-wider text-white">寰宇永續銀行</h1>
+                    <p class="text-[10px] text-emerald-400 tracking-widest uppercase mt-0.5">Global Sustainable Bank</p>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#hero" class="hover:text-emerald-400 transition-colors">首頁</a>
+                <a href="#esg-pillars" class="hover:text-emerald-400 transition-colors">ESG三大構面</a>
+                <a href="#metrics" class="hover:text-emerald-400 transition-colors">永續金融績效</a>
+                <a href="#roadmap" class="hover:text-emerald-400 transition-colors">淨零藍圖</a>
+            </nav>
+
+            <!-- Action & Mobile Hamburger -->
+            <div class="flex items-center space-x-3">
+                <button onclick="openModal()" class="hidden sm:inline-flex items-center space-x-2 text-xs font-semibold px-4 py-2 rounded-full outline-btn">
+                    <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
+                    <span>報告書摘要</span>
+                </button>
+                
+                <!-- Mobile Menu Button -->
+                <button id="menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 rounded-lg focus:outline-none">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-4 pb-6 border-t border-slate-800/80 mt-3 space-y-3">
+            <a href="#hero" class="block text-slate-300 hover:text-emerald-400 py-1" onclick="toggleMenu()">首頁</a>
+            <a href="#esg-pillars" class="block text-slate-300 hover:text-emerald-400 py-1" onclick="toggleMenu()">ESG三大構面</a>
+            <a href="#metrics" class="block text-slate-300 hover:text-emerald-400 py-1" onclick="toggleMenu()">永續金融績效</a>
+            <a href="#roadmap" class="block text-slate-300 hover:text-emerald-400 py-1" onclick="toggleMenu()">淨零藍圖</a>
+            <button onclick="openModal(); toggleMenu();" class="w-full mt-2 text-center text-xs font-semibold py-2.5 rounded-full glow-btn text-slate-950">
+                下載永續報告書 PDF
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-4xl mx-auto px-4 pt-28 space-y-16">
+
+        <!-- Hero Section (Matching Image Aesthetic) -->
+        <section id="hero" class="text-center pt-6 pb-4 relative">
+            <!-- Net Zero Badge -->
+            <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-xs font-medium mb-6 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>2050 投融資全航線淨零承諾</span>
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+                智能金融，<br class="sm:hidden" />
+                <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">綠色同行。</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-8 font-light">
+                寰宇永續銀行以<strong class="text-emerald-300 font-normal">綠色授信</strong>、<strong class="text-emerald-300 font-normal">TCFD 氣候風險管理</strong>與<strong class="text-emerald-300 font-normal">低碳數位金融</strong>為核心，引導資金流向永續產業，兼具卓越金融服務與社會永續責任。
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+                <a href="#esg-pillars" class="w-full sm:w-auto px-8 py-3.5 rounded-full glow-btn text-slate-950 font-bold text-sm text-center flex items-center justify-center space-x-2">
+                    <span>探索永續服務</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+                <button onclick="openModal()" class="w-full sm:w-auto px-8 py-3.5 rounded-full outline-btn text-white font-medium text-sm text-center flex items-center justify-center space-x-2">
+                    <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i>
+                    <span>下載永續報告書</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ESG Pillars Cards Section -->
+        <section id="esg-pillars" class="space-y-6">
+            <div class="text-center space-y-2">
+                <h2 class="text-2xl font-bold text-white tracking-wide">ESG 三大永續構面</h2>
+                <p class="text-xs text-slate-400">符合 GRI、SASB 與 TCFD 國際揭露標準之執行成果</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Environment E Card -->
+                <div class="glass-card rounded-2xl p-6 transition-all duration-300 hover:border-emerald-500/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 text-emerald-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="leaf" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-emerald-400 tracking-wider uppercase">Environment</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">環境永續 (E)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        導入 PCAF 氣候碳核算，推動綠色建築貸款與永續連結貸款（SLL），目標 2030 年無紙化率達 95%。
+                    </p>
+                    <ul class="text-[11px] text-slate-400 space-y-1.5 border-t border-slate-800 pt-3">
+                        <li class="flex items-center"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mr-2"></i>綠色融資餘額突破 500 億</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400 mr-2"></i>分行 ISO 50001 能源認證</li>
+                    </ul>
+                </div>
+
+                <!-- Social S Card -->
+                <div class="glass-card rounded-2xl p-6 transition-all duration-300 hover:border-cyan-500/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-4 text-cyan-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-cyan-400 tracking-wider uppercase">Social</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">社會責任 (S)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        推動普惠金融與金融防詐，提供視障與高齡無障礙金融服務，建立多元共融（DEI）幸福職場。
+                    </p>
+                    <ul class="text-[11px] text-slate-400 space-y-1.5 border-t border-slate-800 pt-3">
+                        <li class="flex items-center"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 mr-2"></i>成功阻詐金額達 1.2 億</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 mr-2"></i>全台分行 100% 金融友善</li>
+                    </ul>
+                </div>
+
+                <!-- Governance G Card -->
+                <div class="glass-card rounded-2xl p-6 transition-all duration-300 hover:border-blue-500/50 group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-4 text-blue-400 group-hover:scale-110 transition-transform">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-blue-400 tracking-wider uppercase">Governance</span>
+                    <h3 class="text-lg font-bold text-white mt-1 mb-2">公司治理 (G)</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                        董事會下設永續發展委員會，落實公平待客原則與高標準資安防護（ISO 27001），誠信合規營運。
+                    </p>
+                    <ul class="text-[11px] text-slate-400 space-y-1.5 border-t border-slate-800 pt-3">
+                        <li class="flex items-center"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-400 mr-2"></i>公平待客評核優等</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-400 mr-2"></i>獨立董事席次超過 50%</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Metrics Calculator / Key Stats -->
+        <section id="metrics" class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="max-w-2xl mx-auto space-y-6">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-white">永續金融影響力模擬</h2>
+                    <p class="text-xs text-slate-400 mt-1">拖動下方滑桿，預估綠色授信帶動的減碳效益</p>
+                </div>
+
+                <!-- Slider Control -->
+                <div class="space-y-4 pt-2">
+                    <div class="flex justify-between text-xs font-semibold">
+                        <span class="text-slate-400">綠色專案融資投放額度：</span>
+                        <span id="loan-value" class="text-emerald-400 font-bold text-base">NT$ 300 億</span>
+                    </div>
+                    <input type="range" id="loan-slider" min="100" max="1000" step="50" value="300" 
+                        class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400">
+                </div>
+
+                <!-- Calculated Impacts Showcase -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800">
+                    <div class="bg-slate-900/60 p-4 rounded-xl text-center border border-slate-800">
+                        <p class="text-[11px] text-slate-400 mb-1">預估年度減碳量</p>
+                        <p id="co2-result" class="text-lg font-extrabold text-emerald-400">15.0 萬公噸</p>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-xl text-center border border-slate-800">
+                        <p class="text-[11px] text-slate-400 mb-1">相當於大安森林公園</p>
+                        <p id="park-result" class="text-lg font-extrabold text-cyan-400">385 座吸碳量</p>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1 bg-slate-900/60 p-4 rounded-xl text-center border border-slate-800">
+                        <p class="text-[11px] text-slate-400 mb-1">支援再生能源發電</p>
+                        <p id="power-result" class="text-lg font-extrabold text-blue-400">2.7 億度</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Net-Zero Roadmap Timeline -->
+        <section id="roadmap" class="space-y-6">
+            <div class="text-center space-y-1">
+                <h2 class="text-2xl font-bold text-white">淨零轉型時程藍圖</h2>
+                <p class="text-xs text-slate-400">邁向永續金融領導銀行的階段性目標</p>
+            </div>
+
+            <div class="relative border-l-2 border-emerald-500/30 ml-4 sm:ml-32 space-y-8 py-2">
+                <!-- Timeline Item 1 -->
+                <div class="relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-emerald-400 border-4 border-slate-950"></div>
+                    <div class="sm:absolute sm:-left-32 sm:top-0 text-xs font-bold text-emerald-400 mb-1 sm:mb-0">2024 年（當前）</div>
+                    <div class="glass-card p-4 rounded-xl">
+                        <h4 class="text-sm font-bold text-white">完備範疇三投融資碳盤查</h4>
+                        <p class="text-xs text-slate-400 mt-1">全面導入 PCAF 計算高碳排產業授信碳足跡，並停止新增煤炭採掘專案融資。</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:bg-cyan-400 transition-colors"></div>
+                    <div class="sm:absolute sm:-left-32 sm:top-0 text-xs font-bold text-slate-400 mb-1 sm:mb-0">2030 年</div>
+                    <div class="glass-card p-4 rounded-xl">
+                        <h4 class="text-sm font-bold text-white">全行營運淨零碳排 (RE100)</h4>
+                        <p class="text-xs text-slate-400 mt-1">國內所有營業據點 100% 使用再生能源，綠色資產佔總授信比重達 35%。</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="relative pl-6 sm:pl-8 group">
+                    <div class="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950 group-hover:bg-blue-400 transition-colors"></div>
+                    <div class="sm:absolute sm:-left-32 sm:top-0 text-xs font-bold text-slate-400 mb-1 sm:mb-0">2050 年</div>
+                    <div class="glass-card p-4 rounded-xl">
+                        <h4 class="text-sm font-bold text-white">達成資產組合全面淨零</h4>
+                        <p class="text-xs text-slate-400 mt-1">投融資組合全面達成溫室氣體淨零排放，攜手客戶共創低碳轉型生態圈。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-slate-800/80 pt-8 pb-12 text-center text-xs text-slate-500">
+        <div class="max-w-4xl mx-auto px-4 space-y-3">
+            <p>© 2026 寰宇永續商業銀行 Global Sustainable Bank. 本網站為企業永續報告書編製提案專用展示頁面。</p>
+            <p class="text-[11px] text-slate-600">報告參照標準：GRI Standards 2021 | SASB Commercial Banking | TCFD Recommendations</p>
+        </div>
+    </footer>
+
+    <!-- Report Preview Modal -->
+    <div id="report-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center px-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="glass-card max-w-lg w-full rounded-2xl p-6 relative border border-emerald-500/30 shadow-2xl">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <i data-lucide="file-check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white text-base">2026 永續報告書提案計畫摘要</h3>
+                    <p class="text-xs text-emerald-400">寰宇永續銀行 - 銀組小組報告</p>
+                </div>
+            </div>
+
+            <!-- Content preview -->
+            <div class="space-y-3 text-xs text-slate-300 bg-slate-900/80 p-4 rounded-xl border border-slate-800 max-h-60 overflow-y-auto">
+                <p class="font-semibold text-emerald-300">【專案編製摘要】</p>
+                <p>1. <strong>目標明確性：</strong>參照標竿銀行（玉山/兆豐），設定投融資淨零與公平待客原則。</p>
+                <p>2. <strong>揭露完整性：</strong>整合 GRI 準則、SASB 商業銀行指標與 TCFD 氣候架構。</p>
+                <p>3. <strong>執行可行性：</strong>排定四階段時程，包含利害關係者問卷、跨部門數據彙整與第三方確信。</p>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div class="mt-6 flex gap-3">
+                <button onclick="downloadAlert()" class="flex-1 py-2.5 rounded-full glow-btn text-slate-950 font-bold text-xs text-center">
+                    下載完整 PDF 計畫書
+                </button>
+                <button onclick="closeModal()" class="px-5 py-2.5 rounded-full outline-btn text-xs text-slate-300">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-emerald-500 text-slate-950 font-bold text-xs px-4 py-3 rounded-xl shadow-xl flex items-center space-x-2">
+        <i data-lucide="check-circle" class="w-4 h-4"></i>
+        <span id="toast-msg">已模擬下載永續報告書計畫書！</span>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        <!-- Navigation Scroll Effect -->
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+        menuBtn.addEventListener('click', toggleMenu);
+
+        // Modal Controls
+        function openModal() {
+            document.getElementById('report-modal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        // Toast Notification
+        function downloadAlert() {
+            closeModal();
+            const toast = document.getElementById('toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Interactive Financial Impact Calculator
+        const slider = document.getElementById('loan-slider');
+        const loanValue = document.getElementById('loan-value');
+        const co2Result = document.getElementById('co2-result');
+        const parkResult = document.getElementById('park-result');
+        const powerResult = document.getElementById('power-result');
+
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            loanValue.innerText = `NT$ ${val} 億`;
+            
+            // Calculate ratios
+            const co2 = (val * 0.05).toFixed(1);
+            const parks = Math.round(val * 1.28);
+            const power = (val * 0.009).toFixed(1);
+
+            co2Result.innerText = `${co2} 萬公噸`;
+            parkResult.innerText = `${parks} 座吸碳量`;
+            powerResult.innerText = `${power} 億度`;
+        });
+    </script>
+</body>
+</html>
